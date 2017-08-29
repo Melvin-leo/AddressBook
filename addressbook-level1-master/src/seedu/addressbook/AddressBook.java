@@ -93,6 +93,9 @@ public class AddressBook {
     private static final String MESSAGE_WELCOME = "Welcome to your Address Book!";
     private static final String MESSAGE_USING_DEFAULT_FILE = "Using default storage file : " + DEFAULT_STORAGE_FILEPATH;
     private static final String MESSAGE_NO_PERSON_IN_ADDRESSBOOK = "There is not enough persons to conduct pairing in the Address Book";
+    private static final String MESSAGE_SUCCESS_FRIEND = "Hope you all have fun making friends!!";
+    private static final String MESSAGE_FRIEND_1 = "1st Friend :";
+    private static final String MESSAGE_FRIEND_2 = "2nd Friend :";
 
     // These are the prefix strings to define the data type of a command parameter
     private static final String PERSON_DATA_PREFIX_PHONE = "p/";
@@ -383,7 +386,7 @@ public class AddressBook {
             case COMMAND_CLEAR_WORD:
                 return executeClearAddressBook();
             case COMMAND_MAKE_FRIEND:
-                executeMakeFriend(ALL_PERSONS);
+                return executeMakeFriend(ALL_PERSONS);
             case COMMAND_HELP_WORD:
                 return getUsageInfoForAllCommands();
             case COMMAND_EXIT_WORD:
@@ -578,9 +581,9 @@ public class AddressBook {
      *
      * Display the information of the pair of persons selected by random
      */
-    private static void executeMakeFriend(ArrayList<HashMap<String,String>> personsToBePaired){
+    private static String executeMakeFriend(ArrayList<HashMap<String,String>> personsToBePaired){
         if(personsToBePaired.size() < 2){
-            System.out.println(MESSAGE_NO_PERSON_IN_ADDRESSBOOK);
+            return String.format(MESSAGE_NO_PERSON_IN_ADDRESSBOOK);
         }
         else {
             Random rand = new Random();
@@ -590,13 +593,14 @@ public class AddressBook {
             while (index2 == index1) {
                 index2 = rand.nextInt(personsToBePaired.size());
             }
-            final HashMap<String, String> person1 = personsToBePaired.get(index1);
-            final HashMap<String, String> person2 = personsToBePaired.get(index2);
-            System.out.println("The first person is "+ person1.get(PERSON_PROPERTY_NAME)+" Phone :"+person1.get(PERSON_PROPERTY_PHONE)+" Email :" + person1.get(PERSON_PROPERTY_EMAIL) );
-            System.out.println("The second person is "+ person2.get(PERSON_PROPERTY_NAME)+" Phone :"+person2.get(PERSON_PROPERTY_PHONE)+" Email :" + person2.get(PERSON_PROPERTY_EMAIL));
-            System.out.println("Hope you all have fun making friends!!");
-        }
+            HashMap<String, String> person1 = personsToBePaired.get(index1);
+            HashMap<String, String> person2 = personsToBePaired.get(index2);
 
+            return "1st Friend : " + person1.get(PERSON_PROPERTY_NAME) +" Phone :"+ person1.get(PERSON_PROPERTY_PHONE) + " Email : "
+                    + person1.get(PERSON_PROPERTY_EMAIL)  + LS + "2nd Friend : " +  person2.get(PERSON_PROPERTY_NAME) +" Phone :"
+                    + person2.get(PERSON_PROPERTY_PHONE) + " Email : "
+                    + person2.get(PERSON_PROPERTY_EMAIL) +LS+ String.format(MESSAGE_SUCCESS_FRIEND);
+        }
 
 
 
